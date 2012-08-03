@@ -1,0 +1,62 @@
+Availability Calendars
+----------------------
+
+Availability Calendars 6.x-2.x yyyy-mm-dd
+-----------------------------------------
+- Issue #1170290 by alansch: typo in table name.
+
+
+Availability Calendars 6.x-2.0 2011-05-26
+-----------------------------------------
+- Issue #1099894 by fietserwin: Notes will not be stored.
+- Issue #1093408 by fietserwin: Winter/summer time offsets cause incorrect month labels. Not a
+  problem in D7, timezones are used correctly, but changed there as well to keep code in sync. 
+- Issue #660502 by fietserwin: Custom colors using administration interface.
+  This change removed the code that was probably causing #1076786
+- By nicholas.alipaz: General code cleanup and removal of whitespace.
+- By fietserwin: commented out the code that probably causes #1076786.
+- Issue #764406 by fietserwin: Allow admin to hide the calendar settings on the node edit page.
+- By fietserwin: Changed notes savings to no longer save empty notes.
+- By fietserwin: Added node delete handling (notes, day states and settings).
+- By fietserwin: Made availability calendar fieldset on node edit form collapsible and collapsed
+  by default.
+- By fietserwin: Removed translation of @date: incorrect use of t().
+- By fietserwin: Removed unused function availability_calendars_menu_callback. As a consequence,
+  availability_calendars_get_settings does no longer have to support scope = nodetype.
+- Issue #1060214 by fietserwin: Prepare for D7 port:
+  * Resolved warnings given by coder module.
+  * Replaced use of arg in function availability_calendars_node_edit_form
+  * Renamed function availability_calendar_getsettings to availability_calendars_get_settings.
+  * Renamed function availability_calendars_save to availability_calendars_save_node_settings.
+  * Moved availability_calendars_key to theme_availability_calendars_key: will from now on thus
+    also be accessed as a theme function
+  * Drupal stores what comes in, and encodes/filters on output: do not store check_plain'ed user
+    input on form submit (nid, year, month, notes) in availability_calendars_node_edit_form_submit,
+    instead added check_plain in theme_availability_calendars_month instead.
+  * Removed (most) E_NOTICE warnings.
+  * Extracted database access to separate functions.
+  * Split code over multiple files (module, admin, node, page and inc). This reduces load on
+    requests that do not use the calendar functionality.
+- Issue #306461 by fietserwin: Added custom configurable availability states.
+- Branched from 6.x-1.6 (kind of, not if you look at the git history, yes functionally seen).
+
+
+Availability Calendars 6.x-1.6 2011-05-26
+-----------------------------------------
+- Issue #1093408 by fietserwin: Winter/summer time offsets cause incorrect month labels. Not a
+  problem in D7, timezones are used correctly, but changed there as well to keep code in sync. 
+- Issue #1009216 by fietserwin: Date translation problem.
+- Issue #1048010 by fietserwin: Changed cache clearing on save (that caused the settings to not
+  persist).
+
+
+Availability Calendars 6.x-1.5 2011-01-23
+-----------------------------------------
+Changes for version 6.x-1.5 and older were not logged in this file.
+
+
+Current and past maintainers for Availability Calendars
+-------------------------------------------------------
+- geodaniel (http://drupal.org/user/37266)
+- nicholas.alipaz (http://drupal.org/user/296276)
+- fietserwin (http://drupal.org/user/750928)

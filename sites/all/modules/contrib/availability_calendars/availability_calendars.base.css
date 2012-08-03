@@ -1,0 +1,43 @@
+.calmonth-wrapper {
+  float: left;
+  padding: 0 6px 6px;
+}
+
+.cal {
+  margin: 0;
+  padding: 0;
+}
+
+.cal caption {
+  margin: 6px 6px 0;
+  padding: 0;
+  border-bottom: 1px solid #aaa;
+}
+
+table.cal tr th, table.cal tr td {
+  margin: 0;
+  padding: 0;
+}
+
+/* special statuses */
+.caltoday span {
+  font-weight: bolder;
+}
+
+.calpastdate span {
+  background-color: #eee;
+}
+
+.calother span {
+  background-color: transparent;
+}
+
+/* key */
+.keystatus {
+  padding-left: 2px;
+}
+
+/* key */
+.cal td.keystatus span {
+  width: auto;
+}

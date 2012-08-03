@@ -1,0 +1,492 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the Availability Calendars module.
+ *
+ * @author Dan Karran (geodaniel) <dan at karran dot net>
+ * @author Nicholas Alipaz (nicholas.alipaz)
+ * @author Erwin Derksen (http://drupal.org/user/750928)
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function availability_calendars_schema() {
+  $schema = array();
+  $schema['availability_calendars_day'] = array(
+    'description' => 'The table for calendar days.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'year' => array(
+        'description' => 'The number of the year.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'month' => array(
+        'description' => 'The number of the month.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'day' => array(
+        'description' => 'The number of the day.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'status' => array(
+        'description' => 'The status.',
+        'type' => 'varchar',
+        'length' => 55,  // status = class or (split day) <am state>-am <pm state>-pm = 2 * (length of a class + 3) + 1
+      ),
+      // [#747036]: this duplication allows for better querying
+      // @todo: make this a date field instead of datetime?
+      // @todo: remove year,month,day fields? what about cross-db handling (mysql, postgres, sqlite, mssql, ...)
+      'date' => array(
+        'description' => 'Datetime representation of availability',
+        'type' => 'datetime'
+      )
+    )
+  );
+
+  $schema['availability_calendars_week'] = array(
+    'description' => 'The table for calendar days.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'year' => array(
+        'description' => 'The number of the year.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'month' => array(
+        'description' => 'The number of the month.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'week' => array(
+        'description' => 'The number of the week.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'note' => array(
+        'description' => 'The status.',
+        'type' => 'varchar',
+        'length' => 64
+      )
+    )
+  );
+
+  $schema['availability_calendars_states'] = array(
+    'description' => 'Store classes and labels for the possible states in availability calendars',
+    'fields' => array(
+      'class' => array(
+        'description' => 'The class used for this state',
+        'type' => 'varchar',
+        'length' => 24,
+        'not null' => TRUE,
+      ),
+      'label' => array(
+        'description' => 'The label as displayed to users for this state',
+        'type' => 'varchar',
+        'length' => 64,  // should not be too long: will give display problems
+        'not null' => TRUE,
+      ),
+      'weight' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+        'description' => 'The weight of this state',
+      ),
+    ),
+    'primary key' => array('class'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function availability_calendars_install() {
+  // Install schema
+  drupal_install_schema('availability_calendars');
+
+  // Fill schema: add a default (starter, example) set of states to the database
+  $states = array(
+    array(
+      'class' => 'calav',
+      'label' => 'Available',
+      'weight' => 1,
+    ),
+    array(
+      'class' => 'calna',
+      'label' => 'Fully booked',
+      'weight' => 2,
+    ),
+    array(
+      'class' => 'calopt',
+      'label' => 'Provisionally booked',
+      'weight' => 3,
+    ),
+  );
+  $insert_query = "INSERT INTO {availability_calendars_states} (class,label,weight) VALUES ('%s','%s',%d)";
+  $success = TRUE;
+  foreach ($states as $state) {
+    $success = db_query($insert_query, $state['class'], $state['label'], $state['weight']) !== FALSE && $success;
+  }
+
+  variable_set('availability_calendars_settings_system_generate', 1);
+  $styles = array(
+    'table' => array(
+      'font-size' => 'smaller',
+      'color' => '#000000',
+      'background-color' => '',
+      'border-width' => '1px',
+      'border-color' => '#000000',
+    ),
+    'caption' => array(
+      'font-weight' => 'bold',
+      'font-style' => 'inherit',
+      'font-size' => 'smaller',
+    ),
+    'header' => array(
+      'height' => '',
+      'font-weight' => 'bold',
+      'font-style' => 'inherit',
+      'font-size' => 'inherit',
+      'text-align' => 'center',
+    ),
+    'week_notes' => array(
+      'width' => '90px',
+    ),
+    'days' => array(
+      'width' => '28px',
+      'height' => '28px',
+      'text-align' => 'center',
+      'vertical-align' => 'middle',
+    ),
+    'states' => array(
+      'split-day'=> '/',
+    ),
+  );
+  // Fill default states
+  $styles['states']['calav'] = '#90ee90';
+  $styles['states']['calna'] = '#ffb6c1';
+  $styles['states']['calopt'] = '#ffffe0';
+  variable_set('availability_calendars_styles', $styles);
+  $link = l(st('Availability Calendars') . ' ' . st('Styling'), 'admin/settings/availability-calendars/styling');
+  drupal_set_message(st("Please visit the '!link' page to generate a CSS file.", array('!link' => $link)), 'warning');
+
+  if (!$success) {
+    drupal_set_message(st('Availability Calendars module not installed successfully.'), 'error');
+  }
+  else {
+    drupal_set_message(st('Availability Calendars module installed successfully.'), 'warning');
+  }
+}
+
+/**
+ * Utility function that is an altered version of variable_del, it will delete
+ * a set of variables set by a module.
+ *
+ * @param string $name The variables' namespace for which to delete
+ */
+function availability_calendars_variable_del_all($name) {
+  db_query("DELETE FROM {variable} WHERE name LIKE '%s%%'", $name);
+  cache_clear_all('variables', 'cache');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function availability_calendars_uninstall() {
+  drupal_uninstall_schema('availability_calendars');
+  availability_calendars_variable_del_all('availability_calendars_');
+  file_delete(file_directory_path() . '/availability_calendars/availability_calendars.css');
+  file_delete(file_directory_path() . '/availability_calendars');
+  drupal_set_message(t('Availability Calendars module uninstalled successfully.'), 'warning');
+}
+
+/**
+ * Update availability_calendars_day table to add date field.
+ */
+function availability_calendars_update_6101() {
+  $ret = array();
+  db_add_field($ret, 'availability_calendars_day', 'date', array('type' => 'datetime', 'not null' => FALSE));
+  $ret[] = update_sql("UPDATE {availability_calendars_day} SET date = CAST(CONCAT(year, '-', month, '-', day, ' 12:00:00') as DATETIME)", $date);
+  $ret[] = array(
+    'success' => TRUE,
+    'query' => 'Recalculated date column for ' . db_affected_rows() . ' availability calendar entries.',
+    'rows' => db_affected_rows(),
+  );
+  return $ret;
+}
+
+/**
+ * Update the settings system.
+ */
+function availability_calendars_update_6102(&$sandbox) {
+  $ret = array();
+  // system wide settings
+  $ret[] = update_sql("UPDATE {variable} SET name = 'availability_calendars_settings_system_nodeview' WHERE name = 'availability_calendars_display_nodeview'");
+  $ret[] = update_sql("UPDATE {variable} SET name = 'availability_calendars_settings_system_hideold' WHERE name = 'availability_calendars_display_hideallold'");
+  $ret[] = update_sql("UPDATE {variable} SET name = 'availability_calendars_settings_system_monthcount' WHERE name = 'availability_calendars_display_monthcount'");
+
+  // content type settings
+  $types = node_get_types();
+  foreach ($types as $id => $val) {
+    if (variable_get("availability_calendars_$val->type", 'marker') !== 'marker') {
+      $ret[] = update_sql("UPDATE {variable} SET name = 'availability_calendars_settings_system-type_$val->type' WHERE name = 'availability_calendars_$val->type'");
+    }
+  }
+
+  // Node specific settings.
+  // Rename all node specific settings, by inserting settings_node_, select by looking at
+  // the format (availability_calendar_%_%) and if the 24th character is a number.
+  // strlen('availability_calendars_') = 23
+  global $db_type;
+  $update_query = "UPDATE {variable} "
+    . ($db_type === 'pgsql' // different string concatenation syntax for the supported databases
+       ? "SET name = substring(name from 1 for 23) || 'settings_node_' || substring(name from 24) "  // Postgres
+       : "SET name = concat(substring(name from 1 for 23), 'settings_node_', substring(name from 24)) ")	// MySql
+    . "WHERE name LIKE 'availability\_calendars\_%\_%' "
+    . "  AND position(substring(name from 24 for 1) in '123456789') > 0";
+  $ret[] = update_sql($update_query);
+  return $ret;
+}
+
+/**
+ * Change statuses to now use class strings instead of integers and alter defaultstatus setting if set.
+ */
+function availability_calendars_update_6103(&$sandbox) {
+  $ret = array();
+  if (!isset($sandbox['progress'])) {
+    // changing statuses
+    $ret[] = update_sql("ALTER TABLE {availability_calendars_day} CHANGE status status MEDIUMTEXT NULL DEFAULT NULL");
+    $ret[] = update_sql("UPDATE {availability_calendars_day} SET status = 'calavailable' WHERE status = '0';");
+    $ret[] = update_sql("UPDATE {availability_calendars_day} SET status = 'calnotavailable' WHERE status = '1';");
+    $ret[] = update_sql("UPDATE {availability_calendars_day} SET status = 'calnotavailableprov' WHERE status = '2';");
+    $ret[] = update_sql("UPDATE {variable} SET value = 's:12:\"calavailable\";' WHERE name = 'availability_calendars_settings_system_defaultstatus' AND value = 'i:0;'");
+    $ret[] = update_sql("UPDATE {variable} SET value = 's:12:\"calavailable\";' WHERE name = 'availability_calendars_settings_system_defaultstatus' AND value = 's:1:\"0\";'");
+    $ret[] = update_sql("UPDATE {variable} SET value = 's:15:\"calnotavailable\";' WHERE name = 'availability_calendars_settings_system_defaultstatus' AND value = 'i:1;'");
+    $ret[] = update_sql("UPDATE {variable} SET value = 's:15:\"calnotavailable\";' WHERE name = 'availability_calendars_settings_system_defaultstatus' AND value = 's:1:\"1\";'");
+    $ret[] = update_sql("UPDATE {variable} SET value = 's:19:\"calnotavailableprov\";' WHERE name = 'availability_calendars_settings_system_defaultstatus' AND value = 'i:2;'");
+    $ret[] = update_sql("UPDATE {variable} SET value = 's:19:\"calnotavailableprov\";' WHERE name = 'availability_calendars_settings_system_defaultstatus' AND value = 's:1:\"2\";'");
+    // content type settings
+    $types = node_get_types();
+    $update_types = array();
+    foreach ($types as $id => $val) {
+      if (variable_get('availability_calendars_settings_system-type_' . $val->type, '0') == '1' || variable_get('availability_calendars_' . $val->type, '0') == '1') {
+        $update_types[] = "'$val->type'";
+      }
+    }
+    $sandbox['progress'] = 0;
+    $sandbox['current_nid'] = 0;
+    $sandbox['update_types'] = implode(', ', $update_types);
+    $sandbox['max'] = db_result(db_query('SELECT COUNT(DISTINCT nid) FROM {node} WHERE type IN (' . $sandbox['update_types'] . ')'));
+  }
+
+  // node specific updates: do not rewrite (i18n might restrict to a certain language)
+  $nodes = db_query_range('SELECT nid FROM {node} WHERE nid > ' . $sandbox['current_nid'] . ' AND type IN (' . $sandbox['update_types'] . ') ORDER BY nid ASC', 0, 1);
+  while ($node = db_fetch_object($nodes)) {
+    $nid = $node->nid;
+    $sql = '';
+    $sql = "WHEN (name = 'availability_calendars_settings_node_" . $nid . "_defaultstatus' AND value = 'i:0;') THEN 's:12:\"calavailable\";'";
+    $sql = "WHEN (name = 'availability_calendars_settings_node_" . $nid . "_defaultstatus' AND value = 's:1:\"0\";') THEN 's:12:\"calavailable\";'";
+    $sql .= " WHEN (name = 'availability_calendars_settings_node_" . $nid . "_defaultstatus' AND value = 'i:1;') THEN 's:15:\"calnotavailable\";'";
+    $sql .= " WHEN (name = 'availability_calendars_settings_node_" . $nid . "_defaultstatus' AND value = 's:1:\"1\";') THEN 's:15:\"calnotavailable\";'";
+    $sql .= " WHEN (name = 'availability_calendars_settings_node_" . $nid . "_defaultstatus' AND value = 'i:2;') THEN 's:19:\"calnotavailableprov\";'";
+    $sql .= " WHEN (name = 'availability_calendars_settings_node_" . $nid . "_defaultstatus' AND value = 's:1:\"1\";') THEN 's:19:\"calnotavailableprov\";'";
+    $ret[] = update_sql("UPDATE {variable} SET value = CASE $sql ELSE value END;");
+    $sandbox['progress']++;
+    $sandbox['current_nid'] = $nid;
+
+  }
+  $ret['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['progress'] / $sandbox['max']);
+  $ret[] = array(
+    'success' => TRUE,
+    'query' => 'Fixed variables for ' . $sandbox['max'] . ' availability calendar variable settings.',
+  );
+  return $ret;
+}
+
+/**
+ * Add custom states (issue #306461)
+ */
+function availability_calendars_update_6200(&$sandbox) {
+  $ret = array();
+
+  // Change type of field status of table availability_calendars_day,
+  // as it (kind of) refers to the class field of the new states table
+  db_change_field($ret, 'availability_calendars_day', 'status', 'status', array('type' => 'varchar', 'length' => 64));
+
+  // Add table to store configurable statuses
+  $tables = availability_calendars_schema();  //DRY: get table def from schema
+  $table_name = 'availability_calendars_states';
+  db_create_table($ret, $table_name, $tables[$table_name]);
+
+  // Add existing (hard-coded) states to the database
+  $states = array(
+    array(
+      'class' => 'calavailable',
+      'label' => 'Available',
+      'weight' => 1,
+    ),
+    array(
+      'class' => 'calnotavailable',
+      'label' => 'Fully booked',
+      'weight' => 2,
+    ),
+    array(
+      'class' => 'calnotavailableprov',
+      'label' => 'Provisionally booked',
+      'weight' => 3,
+    ),
+  );
+  $insert_query = "INSERT INTO {availability_calendars_states} (class,label,weight) VALUES ('%s','%s',%d)";
+  $success = TRUE;
+  foreach ($states as $state) {
+    $success = db_query($insert_query, $state['class'], $state['label'], $state['weight']) !== FALSE && $success;
+  }
+  $ret[] = array('success' => $success, 'query' => $insert_query);
+
+  // Update split statuses: the old way of assembling them did not work any more with configurable states and classes
+  $split_state_updates = array(
+    'calsplit cal-available_notavailable' => 'calsplit cal-calavailable_calnotavailable',
+    'calsplit cal-available_notavailableprov' => 'calsplit cal-calavailable_calnotavailableprov',
+    'calsplit cal-notavailable_available' => 'calsplit cal-calnotavailable_calavailable',
+    'calsplit cal-notavailable_notavailableprov' => 'calsplit cal-calnotavailable_calnotavailableprov',
+    'calsplit cal-notavailableprov_available' => 'calsplit cal-calnotavailableprov_calavailable',
+    'calsplit cal-notavailableprov_notavailable' => 'calsplit cal-calnotavailableprov_calnotavailable',
+  );
+  $update_query = "UPDATE {availability_calendars_day} SET status = '%s' WHERE status = '%s'";
+  $success = TRUE;
+  foreach ($split_state_updates as $state_update_old => $state_update_new) {
+    $success = db_query($update_query, $state_update_new, $state_update_old) !== FALSE && $success;
+  }
+  $ret[] = array('success' => $success, 'query' => $update_query);
+
+  return $ret;
+}
+
+/**
+ * Allow to disable per node override (issue #764406)
+ * On upgrades, the default should be set to 'on'.
+ */
+function availability_calendars_update_6201(&$sandbox) {
+  $ret = array();
+  variable_set('availability_calendars_settings_system_pernodeoverride', 1);
+  $ret[] = array('success' => true, 'query' => 'Added new variable.');
+  return $ret;
+}
+
+/**
+ * Allow to define custom colors using administration interface (issue #660502)
+ * The upgrade should mimic the current availability_calendars.css as much as possible.
+ */
+function availability_calendars_update_6202(&$sandbox) {
+  $ret = array();
+
+  // Update statuses: shorten them
+  $state_updates = array(
+    'calavailable' => 'calav',
+    'calnotavailable' => 'calna',
+    'calnotavailableprov' => 'calopt',
+  );
+  $update_states_query = "UPDATE {availability_calendars_states} SET class = '%s' WHERE class = '%s'";
+  $update_days_query = "UPDATE {availability_calendars_day} SET status = '%s' WHERE status = '%s'";
+  $success = TRUE;
+  foreach ($state_updates as $state_update_old => $state_update_new) {
+    $success = db_query($update_states_query, $state_update_new, $state_update_old) !== FALSE && $success;
+    $success = db_query($update_days_query, $state_update_new, $state_update_old) !== FALSE && $success;
+  }
+  $ret[] = array('success' => $success, 'query' => 'Shortened default states');
+
+  // Update statuses: redefine storage for split day states
+  // - get unique split day statuses
+  // - for each of these: define an update entry/query (taking into account above renamings)
+  // - execute querys
+  $split_state_updates = array();
+  $result = db_query("SELECT distinct status FROM {availability_calendars_day} WHERE status LIKE 'calsplit %'");
+  while ($state = db_fetch_array($result)) {
+    $state = $state['status'];
+    // state = 'calsplit cal-<am>_<pm>'
+    // algorithm will fail with underscores in class names (not likely as 6200 to 6203 will be released at the same time)
+    $underscore = strpos($state, '_');
+    $am_state = substr($state, strlen('calsplit cal-'), $underscore - strlen('calsplit cal-'));
+    if (array_key_exists($am_state, $state_updates)) {
+      $am_state = $state_updates[$am_state];
+    }
+    $pm_state = substr($state, $underscore + 1);
+    if (array_key_exists($pm_state, $state_updates)) {
+      $pm_state = $state_updates[$pm_state];
+    }
+    $split_state_updates[$state] = "$am_state-am $pm_state-pm";
+  }
+  $update_query = "UPDATE {availability_calendars_day} SET status = '%s' WHERE status = '%s'";
+  $success = TRUE;
+  foreach ($split_state_updates as $state_update_old => $state_update_new) {
+    $success = db_query($update_query, $state_update_new, $state_update_old) !== FALSE && $success;
+  }
+  $ret[] = array('success' => $success, 'query' => 'Redefined storage for split day states');
+
+  variable_set('availability_calendars_settings_system_generate', 1);
+  $styles = array(
+    'table' => array(
+      'font-size' => 'smaller',
+      'color' => '#000000',
+      'background-color' => '#ffffff',
+      'border-width' => '0px',
+      'border-color' => '#000000',
+    ),
+    'caption' => array(
+      'text-align' => 'left',
+      'font-weight' => 'bold',
+      'font-style' => 'inherit',
+      'font-size' => 'smaller',
+    ),
+    'header' => array(
+      'height' => '',
+      'font-weight' => 'bold',
+      'font-style' => 'inherit',
+      'font-size' => '',
+      'text-align' => 'center',
+    ),
+    'week_notes' => array(
+      'width' => '90px',
+    ),
+    'days' => array(
+      'width' => '28px',
+      'height' => '28px',
+      'text-align' => 'center',
+      'vertical-align' => 'middle',
+    ),
+    'states' => array(
+      'split-day' => '/',
+    ),
+  );
+  // Fill (default) states
+  $styles['states']['calav'] = '#90ee90';
+  $styles['states']['calna'] = '#ffb6c1';
+  $styles['states']['calopt'] = '#ffffe0';
+  variable_set('availability_calendars_styles', $styles);
+  $link = l(st('Availability Calendars') . ' ' . st('Styling'), 'admin/settings/availability-calendars/styling');
+  drupal_set_message(st("Please visit the '!link' page to generate a CSS file.", array('!link' => $link)), 'warning');
+  $ret[] = array('success' => true, 'query' => 'Added new variables.');
+  return $ret;
+}

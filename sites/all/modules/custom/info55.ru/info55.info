@@ -1,0 +1,5 @@
+name = info55
+description = Custom info55
+package = "-info55-"
+core = 6.x
+project = "info55"

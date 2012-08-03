@@ -1,0 +1,15 @@
+name = Availability Calendars
+description = Allows for availability information to be displayed using calendars on specified content types.
+core = 6.x
+
+; Information added by drupal.org packaging script
+version = "6.x-2.x-dev"
+core = "6.x"
+project = "availability_calendars"
+
+; Information added by drupal.org packaging script on 2011-07-19
+version = "6.x-2.1"
+core = "6.x"
+project = "availability_calendars"
+datestamp = "1311060727"
+

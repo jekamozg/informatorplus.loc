@@ -1,0 +1,282 @@
+.info_extension_block {
+    float: right;
+    width: 470px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+.info_extension_menu {
+    float: left;
+    width: 100%;
+    padding: 5px 0;
+    background-color: #222;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, top left, bottom left, from(#333333), to(#000000));
+    background-image: -moz-linear-gradient(left, #333333, #000000);
+    background-image: -ms-linear-gradient(left, #333333, #000000);
+    background-image: -webkit-gradient(linear, top left, bottom left, color-stop(0%, #333333), color-stop(100%, #000000));
+    background-image: -webkit-linear-gradient(left, #333333, #000000);
+    background-image: -o-linear-gradient(left, #333333, #000000);
+    background-image: linear-gradient(left, #333333, #000000);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#000000', GradientType=1);
+    behavior: url(/PIE.htc);
+}
+.info_extension_menu .info_extension_menu_item {
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    margin: 0 1px;
+    height: 20px;
+    text-align: center;
+    width: 80px;
+    float: left;
+    behavior: url(/PIE.htc);
+}
+.info_extension_menu .info_extension_menu_item:hover, .info_extension_menu .info_extension_menu_item.active {
+    cursor: pointer;
+    box-shadow: 0 0 5px rgb(255,102,0);
+    box-shadow: 0 0 10px rgba(255,102,0,1);
+    -moz-box-shadow: 0 0 10px rgba(255,102,0,1);
+    -webkit-box-shadow: 0 0 10px rgba(255,102,0,1);
+    behavior: url(/PIE.htc);
+}
+.info_extension_content {
+    clear: both;
+}
+
+.info_extension_content .info_extension_content_item {
+    display: none;
+    padding: 10px;
+    background-color: #111;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#333333), to(#000000));
+    background-image: -moz-linear-gradient(top, #333333, #000);
+    background-image: -ms-linear-gradient(top, #333333, #000);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #000000));
+    background-image: -webkit-linear-gradient(top, #333333, #000000);
+    background-image: -o-linear-gradient(top, #333333, #000000);
+    background-image: linear-gradient(top, #333333, #000000);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#000000', GradientType=0);
+    float: left;
+    width: 450px;
+    behavior: url(/PIE.htc);
+}
+.info_extension_content .info_extension_content_item:first-child {
+    display: block;
+}
+.info_extension_content_item .views-row{
+    float: left;
+    width: 100%;
+    margin: 1px 0;
+    min-height: 30px;
+    clear: both;
+    border-bottom: 1px solid #666;
+}
+.info_extension_content_item .pager {
+    margin: 0;
+    padding-top: 7px;
+}
+.info_extension_content_item .views-row:hover{
+    cursor: pointer;
+    background-color: #454545;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#7D7D7D), to(#454545));
+    background-image: -moz-linear-gradient(top, #7D7D7D, #454545);
+    background-image: -ms-linear-gradient(top, #7D7D7D, #454545);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7D7D7D), color-stop(100%, #454545));
+    background-image: -webkit-linear-gradient(top, #7D7D7D, #454545);
+    background-image: -o-linear-gradient(top, #7D7D7D, #454545);
+    background-image: linear-gradient(top, #7D7D7D, #454545);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7d7d7d', endColorstr='#454545', GradientType=0);
+    behavior: url(/PIE.htc);
+}
+.info_extension_content_item .views-row .views-field-field-e-picture-fid {
+    float: left;
+}
+.info_extension_content_item .views-row a{
+    padding: 2px;
+}
+.info_extension_content_item .views-row img{
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    margin-top: 2px;
+}
+.info_extension_content_item .views-row .views-field-timestamp{
+    float: right;
+    padding: 5px;
+}
+.info_extension_content_item .views-row .views-field-title a{
+    color: #fff;
+}
+.info_extension_content_item .views-row .views-field-title a:hover{
+    text-decoration: none;
+}
+.info_extension_content_item .views-row .views-field-title{
+    padding: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    float: left;
+}
+
+.info_extension_content_item .views-field-field-ac-photo-fid .field-item, .info_extension_content_item .views-field-field-ac-photo-fid{
+    float: left;
+}
+
+/*node body*/
+.info_extension_node_body {
+    clear: left;
+}
+/*end node body*/
+
+.field-field-a-photo
+{
+    clear: left;
+    position: relative;
+    width:440px;
+    overflow: hidden;
+    float: left;
+    padding-top: 5px;
+    background: rgba(0,0,0,0.8);
+}
+.field-field-a-photo .field-items {
+    float: left;
+}
+.smooth_pager {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    z-index: 10;
+    background: rgba(0,0,0,0.8);
+    position: absolute;
+    float: left;
+    width: 20px;
+    height: 100%;
+}
+.smooth_pager:hover{
+    cursor: pointer;
+    background: rgb(0,0,0);
+}
+.smooth_pager.field_item_prev{
+    left: 0;
+}
+.smooth_pager.field_item_next{
+    right: 0;
+}
+
+#view-id-autoservice_partners_field-page_1 {
+    margin-top: 15px;
+    clear: both;
+    background: #3E3E3E;
+    border: 1px solid #555;
+    margin: 15px 0;
+    padding: 0 15px 15px 15px;
+    border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
+    -webkit-border-radius: 4px !important;
+    behavior: url(/PIE.htc);
+}
+#view-id-autoservice_partners_field-page_1 .content {
+    margin-bottom: 0;
+}
+#view-id-autoservice_partners_field-page_1 .views-row .views-field-field-logo-fid + div.views-field-title{
+    display: none;
+}
+#view-id-autoservice_partners_field-page_1 .views-row .views-field-title{
+    width: 150px;
+    overflow: hidden;
+}
+#view-id-autoservice_partners_field-page_1 .views-row {
+    overflow: hidden;
+    margin: 2px;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #111;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#333), to(black));
+    background-image: -moz-linear-gradient(top, #333, black);
+    background-image: -ms-linear-gradient(top, #333, black);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333), color-stop(100%, black));
+    background-image: -webkit-linear-gradient(top, #333, black);
+    background-image: -o-linear-gradient(top, #333, black);
+    background-image: linear-gradient(top, #333, black);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#000000', GradientType=0);
+    float: left;
+    behavior: url(/PIE.htc);
+}
+#view-id-autoservice_partners_field-page_1 .header {
+    text-align: center;
+    width: 100px;
+    margin: 5px 0;
+    margin-top: -10px;
+    font-size: 100%;
+    background: #1B1B1B;
+    border: 1px solid #555;
+    font-weight: bold;
+    padding: 0 5px;
+}
+.info_extension_center{
+    text-align: center;
+}
+.info_extension_label{
+    border-left: 1px solid #000;
+    border-right: 1px solid #444;
+    width: 220px;
+    font-size: 10px;
+    border-bottom-right-radius: 25px;
+    border-top-left-radius: 25px;
+    -webkit-border-bottom-right-radius: 25px;
+    -webkit-border-top-left-radius: 25px;
+    -moz-border-bottom-right-radius: 25px;
+    -moz-border-top-left-radius: 25px;
+    font-weight: bold;
+    margin-left: -10px;
+    margin-right: -10px;
+    background-color: #454545;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear,top left ,bottom left , from(#E23820), to(#000000));
+    background-image: -moz-linear-gradient(left, #E23820, #000000);
+    background-image: -ms-linear-gradient(left, #E23820, #000000);
+    background-image: -webkit-gradient(linear, top left ,bottom left, color-stop(0%, #E23820), color-stop(100%, #000000));
+    background-image: -webkit-linear-gradient(left, #E23820, #000000);
+    background-image: -o-linear-gradient(left, #E23820, #000000);
+    background-image: linear-gradient(left, #E23820, #000000);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E23820', endColorstr='#000000', GradientType=1);
+    behavior: url(/PIE.htc);
+    
+/*    opacity: 0.5;*/
+/*    background-color: #454545;*/
+}
+.field-field-c-photo .field-item{
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 6px;
+    margin: 6px;
+    float: left;
+    background-color: #454545;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(black), to(#333));
+    background-image: -moz-linear-gradient(top, black, #333);
+    background-image: -ms-linear-gradient(top, black, #333);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, #333));
+    background-image: -webkit-linear-gradient(top, black, #333);
+    background-image: -o-linear-gradient(top, black, #333);
+    background-image: linear-gradient(top, black, #454545);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#333333', GradientType=0);
+    behavior: url(/PIE.htc);
+}
+.field-field-c-photo .field-item:hover{
+    background-color: #111;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear,left top,left bottom,from(#333),to(black));
+    background-image: -moz-linear-gradient(top,#333,black);
+    background-image: -ms-linear-gradient(top,#333,black);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#333),color-stop(100%,black));
+    background-image: -webkit-linear-gradient(top,#333,black);
+    background-image: -o-linear-gradient(top,#333,black);
+    background-image: linear-gradient(top,#333,black);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#000000',GradientType=0);
+    behavior: url(/PIE.htc);
+}
+.field-field-c-photo .field-item img{
+}

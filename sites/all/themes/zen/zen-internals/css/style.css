@@ -1,0 +1,64 @@
+/* 
+    Document   : style
+    Created on : 03.07.2011, 21:35:21
+    Author     : jeka
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+/*admin*/
+#admin-menu {
+    z-index: 99999;
+}
+/*end admin*/
+/*main*/
+
+a {
+    color: orangered;
+}
+
+body {
+    border: 1px solid #DDDDDD;
+    font-family: sans-serif;
+/*    text-shadow: 1px 0px 0px #eeeeee;*/
+    margin: 0 auto;
+    width: 960px;
+    color: #555555;
+    background: url("../images/bg_dotted.png") repeat scroll 0 0;
+}
+
+#main-wrapper .section {
+    margin: 10px 10px 10px 10px !important;
+}
+
+#header {
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 9999; /* Порядок слоев */
+    width: 100%; /* Ширина слоя с фоном */
+    height: 77px; /* Высота слоя с фоном */
+    position: fixed; /* Абсолютное позиционирование */
+    left: 0; /* Положение от левого края окна */
+    top: 0; /* Положение от верхнего края */
+}
+
+#header .section {
+    width: 960px;
+    margin: 0 auto;
+}
+#header .block {
+    float: left;
+}
+#content {
+    margin-top: 70px;
+}
+.region-header {
+    margin-top: 20px;
+}
+/*end main*/
+
+
+

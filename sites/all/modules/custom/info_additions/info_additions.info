@@ -1,0 +1,5 @@
+name = info_additions
+description = Custom info_additions
+package = "-info55-"
+core = 6.x
+project = "info_additions"

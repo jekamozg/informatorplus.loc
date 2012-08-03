@@ -1,0 +1,310 @@
+<?php
+
+//hook_init
+function itexl_init() {
+//  drupal_add_js(drupal_get_path('module', 'info55') . '/js/info55.js');
+    drupal_add_css(drupal_get_path('module', 'info55') . '/css/info55.css');
+}
+
+function info55_form_alter(&$form, &$form_state, $form_id) {
+//    print($form_id);die;
+    if ('announcement_node_form' == $form_id) {
+//      print_r($form['taxonomy']);die;
+//    $form['workflow']['upload'] = array(
+//      '#type' => 'radios',
+//      '#title' => t('Attachments'),
+//      '#default_value' => variable_get('upload_'. $form['#node_type']->type, 1),
+//      '#options' => array(t('Disabled'), t('Enabled')),
+//    );
+    }
+}
+
+function info55_news_form($form_state) {
+    $form['events'] = array(
+        '#type' => 'item',
+//        '#title' => t('From'),
+        '#value' => theme('news_block', 'События'),
+    );
+    $form['actions'] = array(
+        '#type' => 'item',
+//        '#title' => t('From'),
+        '#value' => theme('news_block', 'Акции'),
+    );
+    $form[''] = array(
+        '#type' => 'item',
+//        '#title' => t('From'),
+        '#value' => theme('news_block', 'Скидки'),
+    );
+    return $form;
+}
+
+function info55_autoservices_form($form_state) {
+    module_load_include('inc', 'content', 'includes/content.crud');
+    $items = content_field_instance_read(array('field_name' => 'field_service_type'));
+    $items = $items[0]['allowed_values'];
+    $items = explode("\n", $items);
+    foreach ($items as $key => $row) {
+        $form['autoservices_' . $key] = array(
+            '#type' => 'item',
+            //        '#title' => t('From'),
+            '#value' => theme('autoservices_block', $row),
+        );
+    }
+    return $form;
+}
+
+//hook_block
+function info55_block($op = 'list', $delta = 0, $edit = array()) {
+    if ($op == 'list') {
+        $blocks[0] = array('info' => t('News block (info55)'));
+        $blocks[1] = array('info' => t('Autoservices block (info55)'));
+        $blocks[2] = array('info' => t('About block (info55)'));
+        $blocks[3] = array('info' => t('Bank block (info55)'));
+        $blocks[4] = array('info' => t('Share block (info55)'));
+//      'weight' => 0, 'status' => 1, 'region' => 'left');
+        return $blocks;
+    } else if ($op == 'view') {
+        switch ($delta) {
+            case 0:
+                $block = array(
+                    'content' => drupal_get_form('info55_news_form'));
+                break;
+            case 1:
+                $block = array(
+                    'content' => drupal_get_form('info55_autoservices_form'));
+                break;
+            case 2:
+                $block = array(
+                    'content' => about_buttons_block());
+                break;
+            case 3:
+                $block = array(
+                    'content' => theme('block_bank'));
+                break;
+            case 4:
+                $block = array(
+                    'content' => theme('share_block')
+                );
+                break;
+        }
+        return $block;
+    }
+}
+
+function about_buttons_block() {
+    $output .= l('Описание', 'about/Описание');
+    $output .= l('Прайс-лист', 'about/Прайс-лист');
+    $output .= l('Контакты', 'about/contacts');
+    $output .= l('Обратная связь', 'about/contact');
+    return $output;
+}
+
+function about_mail_contact() {
+    return drupal_get_form('about_mail_contact_form');
+}
+
+function about_mail_contact_form() {
+    $form = array();
+//    $form['contact'] = array(
+//        '#type' => 'fieldset',
+////        '#title' => 'Контакты',
+////        '#weight' => 5,
+//        '#collapsible' => FALSE,
+//        '#collapsed' => FALSE,
+//    );
+    $form['contact']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Ваше имя',
+        '#required' => TRUE,
+    );
+    $form['contact']['email'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Ваш e-mail',
+        '#required' => TRUE,
+    );
+    $form['contact']['phone'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Ваш телефон',
+        '#required' => TRUE,
+    );
+    $form['contact']['text'] = array(
+        '#type' => 'textarea',
+        '#title' => 'Письмо администратору',
+        '#required' => TRUE,
+    );
+    $form['contact']['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Отправить письмо',
+    );
+    return $form;
+}
+
+function about_mail_contact_form_validate(&$form, &$form_state) {
+    $values = $form_state['values'];
+    if (!valid_email_address($values['email'])) {
+        form_set_error('email', 'Введите пожалуйста правильный Email-адрес');
+    }
+}
+
+function about_mail_contact_form_submit(&$form, &$form_state) {
+    $values = $form_state['values'];
+    $manager = user_load(3);
+    drupal_mail('info55', 'feedback', $manager->mail, user_preferred_language(NULL), $values);
+    drupal_set_message('Сообщение отправлено администрации Informatorplus, мы свяжемся с вами в течение нескольких часов');
+}
+
+function info55_mail($key, &$message, $params) {
+    switch ($key) {
+        case 'feedback':
+            $message['subject'] = 'Feedback';
+            $message['body'] = theme_table(array('data' => array('', '')), array(
+                array('data' => array('Имя:', $params['name'])),
+                array('data' => array('Email:', l($params['email'], 'mailto:' . $params['email']))),
+                array('data' => array('Телефон:', $params['phone'])),
+                array('data' => array('Сообщение:', $params['text'])),
+                    ));
+            $headers = array(
+                'MIME-Version' => '1.0',
+                'From' => variable_get('site_mail', ''),
+                'Reply-To' => variable_get('site_mail', ''),
+                'Content-Type' => 'text/html; charset=UTF-8; format=flowed',
+                'Content-Transfer-Encoding' => '8Bit',
+                'X-Mailer' => 'Drupal'
+            );
+            foreach ($headers as $key => $value) {
+                $message['headers'][$key] = $value;
+            }
+//            print($message['body']);die;
+            break;
+    }
+}
+
+//hook_theme
+function info55_theme() {
+    $info55_path = drupal_get_path('module', 'info55') . '/templates';
+    return array(
+        'news_block' => array(
+            'arguments' => array(
+                'href' => null,
+            //'content' => array('name' => NULL, 'cost' => NULL, 'filepath' => NULL),
+            ),
+            'path' => $info55_path,
+            'template' => 'news_block'
+        ),
+        'autoservices_block' => array(
+            'arguments' => array(
+                'href' => null,
+            //'content' => array('name' => NULL, 'cost' => NULL, 'filepath' => NULL),
+            ),
+            'path' => $info55_path,
+            'template' => 'autoservices_block'
+        ),
+        'block_bank' => array(
+            'path' => $info55_path,
+            'template' => 'block_bank',
+        ),
+        'share_block' => array(
+            'arguments' => array(
+                'title' => null,
+            ),
+            'path' => $info55_path,
+            'template' => 'share_block',
+        ),
+    );
+}
+
+function info55_menu() {
+    $items = array();
+    $items['test'] = array(
+        'title' => t('Footer Block settings'),
+        'description' => t('Administer settings related to the footer Block.'),
+        'page callback' => 'test',
+//		'page arguments' => array('footer_admin_settings'),
+        'access arguments' => array('access content'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['test_view/%'] = array(
+        'title' => t('Footer Block settings'),
+        'description' => t('Administer settings related to the footer Block.'),
+        'page callback' => 'test_view',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['about/contact'] = array(
+        'title' => 'Контакты',
+        'page callback' => 'about_mail_contact',
+        'access arguments' => array('access content'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    return $items;
+}
+
+function info55_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+
+    switch ($op) {
+        case 'view':
+            if ($node->type == 'autoservice') {
+                $tax_service_type = taxonomy_node_get_terms_by_vocabulary($node, 3);
+                $tax_pay = taxonomy_node_get_terms_by_vocabulary($node, 6);
+                foreach ($tax_service_type as $tax_term) {
+                    $taxonomy_tree_service_type[] = $tax_term->name;
+                }
+                foreach ($tax_pay as $tax_term) {
+                    $taxonomy_tree_pay[] = $tax_term->name;
+                }
+                $node->content['tax_pay'] = array(
+                    '#value' => '<div class="tax_pay">' . theme('item_list', $taxonomy_tree_pay, 'Виды оплаты', 'ul', array('class' => 'autoservice_pay_taxonomy')) . '</div>',
+                    '#weight' => 5,
+                );
+                $node->content['tax_service_type'] = array(
+                    '#value' => '<div class="tax_service_type">' . theme('item_list', $taxonomy_tree_service_type, 'Деятельность', 'ul', array('class' => 'autoservice_taxonomy')) . '</div>',
+                    '#weight' => 5,
+                );
+            }
+            break;
+        case 'alter':
+            if ($node->type == 'autoservice') {
+//                print_r($node->content);die;
+            }
+            break;
+    }
+}
+
+//function test() {
+//    ctools_include('ajax'); // Module  include the dependence it needs for ajax.
+//    ctools_include('modal');
+//    ctools_modal_add_js();
+//
+//    $output = ctools_ajax_text_button(t('Click Here'), 'test_view/4', t('Pop me up'));
+////  $output .= '<div id="modal-message">&nbsp</div>';
+////  ctools_include('plugins');
+//    return $output;
+//}
+//
+//function test_view($arg) {
+//    ctools_include('ajax'); // Module  include the dependence it needs for ajax.
+//    ctools_include('modal');
+//    ctools_modal_add_js();
+//
+//    $newview = views_get_view('autoservices');
+//    $newview->set_display('page');
+//    $newview->set_option('path', 'autoservices/4');
+////    $newview->set_arguments(array('autoservices', $arg));
+//    $newview->override_path = 'autoservices/4';
+//    $newviewget = $newview->preview();
+////    return views_ajax_render('', 'qwe', 'events');
+//    $commands = array();
+//    $commands[] = ctools_ajax_command_replace('#content-group', $newviewget);
+//    ctools_ajax_render($commands);
+//}
+//
+////custom functions
+//function views_get_nid($view_result, $output) {
+//    foreach ($view_result as $key => $value) {
+//        if ($value->node_title == $output) {
+//            return $value->nid;
+//        }
+//    }
+//}
+?>

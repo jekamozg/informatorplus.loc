@@ -1,0 +1,5 @@
+name = info_parser
+description = Custom info_parser
+package = "-info55-"
+core = 6.x
+project = "info_parser"

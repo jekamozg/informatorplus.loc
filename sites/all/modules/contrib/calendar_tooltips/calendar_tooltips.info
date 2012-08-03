@@ -1,0 +1,12 @@
+name = Calendar tooltips
+description = Generates a balloon with events when you hover over a day on a calendar block
+core = 6.x
+dependencies[] = beautytips
+dependencies[] = calendar
+
+; Information added by drupal.org packaging script on 2011-05-11
+version = "6.x-1.9"
+core = "6.x"
+project = "calendar_tooltips"
+datestamp = "1305133315"
+

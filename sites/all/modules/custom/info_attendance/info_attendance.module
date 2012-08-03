@@ -1,0 +1,98 @@
+<?php
+
+/*
+ * hook_init
+ */
+
+function info_attendance_init() {
+    drupal_add_css(drupal_get_path('module', 'info_attendance') . '/css/style.css');
+}
+
+/*
+ * hook_block
+ */
+
+function info_attendance_block($op = 'list', $delta = 0, $edit = array()) {
+    if ($op == 'list') {
+        $blocks[0] = array(
+            'info' => t('Attendance block (info_attendance)'),
+            'weight' => 0,
+            'status' => 1,
+            'region' => 'left',
+        );
+        return $blocks;
+    } else if ($op == 'view') {
+        switch ($delta) {
+            case 0:
+                $block = array(
+                    'content' => info_attendance_output());
+                break;
+        }
+        return $block;
+    }
+}
+
+function info_attendance_theme() {
+    $template = drupal_get_path('module', 'info_attendance') . '/templates';
+    return array(
+        'info_attendance' => array(
+            'arguments' => array(
+                'attendance' => null,
+            ),
+            'path' => $template,
+            'template' => 'attendance'
+        ),
+    );
+}
+
+function info_attendance_output() {
+//    return theme('item_list', info_attendance_calculate(), '', 'ul', array('class' => 'info_attendance'));
+    return theme('table', array('Посещаемость', 'пользователей'), info_attendance_calculate(30, 1000, 35000), array('class' => 'info_attendance'));
+}
+
+function info_attendance_calculate($now, $today, $month) {
+    $time = gettimeofday();
+    $expire = $time['sec'];
+
+    function generate_cache($value, $disp, $expire, $cache) {
+        $value = rand(info_attendance_disperion($value, $disp, 'min'), info_attendance_disperion($value, $disp, 'max'));
+        cache_set($cache, $value, 'cache', $expire);
+        return $value;
+    }
+
+    function get_value($now, $disp, $expire, $shift, $cid) {
+        if (!$gen_now = cache_get($cid)) {
+            $gen_now = generate_cache($now, $disp, $expire + $shift, $cid);
+        } else {
+            if ($gen_now->expire <= $expire) {
+                $gen_now = generate_cache($now, $disp, $expire + $shift, $cid);
+            } else {
+                $gen_now = $gen_now->data;
+            }
+        }
+        return $gen_now;
+    }
+    
+    $gen_now = get_value($now, 10, $expire, 300, 'info_attendance_now');
+    $gen_today = get_value($today, 200, $expire, 3600, 'info_attendance_today');
+    $gen_month = get_value($month, 2000, $expire, 86400, 'info_attendance_month');
+
+    $values_array = array(
+        array('Сейчас на сайте', $gen_now),
+        array('За последний день', $gen_today),
+        array('За последний месяц', $gen_month),
+    );
+    return $values_array;
+}
+
+function info_attendance_disperion($value, $disp, $type = 'max') {
+    switch ($type) {
+        case 'max':
+            $return = $value + $disp;
+            break;
+        case 'min':
+            $return = $value - $disp;
+            break;
+    }
+    return $return;
+}

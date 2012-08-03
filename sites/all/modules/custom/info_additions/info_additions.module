@@ -1,0 +1,82 @@
+<?php
+
+/*
+ * hook_init
+ */
+
+function info_additions_init() {
+    
+}
+
+/*
+ * hook_block
+ */
+
+function info_additions_block($op = 'list', $delta = 0, $edit = array()) {
+    if ($op == 'list') {
+        $blocks[0] = array('info' => t('Top banner (info_additions)'));
+        $blocks[1] = array('info' => t('Right banner (info_additions)'));
+        return $blocks;
+    } else if ($op == 'view') {
+        switch ($delta) {
+            case 0:
+                $block = array(
+                    'content' => info_additions_top_banner(),
+                );
+                break;
+            case 1:
+                $block = array(
+                    'content' => info_additions_right_banner(),
+                );
+                break;
+        }
+        return $block;
+    }
+}
+
+function info_additions_top_banner() {
+//    return l(theme('image', drupal_get_path('theme', 'acquia_slate') . '/images/favorit.gif', '', '', array('width' => '940'), FALSE), '#', array('html' => TRUE, 'attributes' => array('target' => '_blank')));
+    return (theme('image', drupal_get_path('theme', 'acquia_slate') . '/images/favorit.gif', '', '', array('width' => '940'), FALSE));
+}
+
+function info_additions_right_banner() {
+    return info_additions_right_banner_render(array(
+                array(
+                    'image' => 'nahodka.jpg',
+                    'href' => 'http://www.nahodka55.ru/',
+                ),
+                array(
+                    'image' => '01.gif',
+                    'href' => 'http://dizel-life.ru/',
+                ),
+                array(
+                    'image' => 're-disk.jpg',
+                    'href' => '',
+                ),
+                array(
+                    'image' => 'akula.jpg',
+                    'href' => 'http://www.black-sharks-omsk.ru/',
+                ),
+                array(
+                    'image' => 'forum_2011_banner.gif',
+                    'href' => 'http://sibir-cup.ru/',
+                ),
+            ));
+}
+function info_additions_right_banner_render($image_names = array()) {
+    if ($image_names) {
+        $output = '<div class="right_banner_wrapper">';
+        foreach ($image_names as $key => $value) {
+            $output .= '<div class="right_banner_item">';
+            $image = theme('image', drupal_get_path('theme', 'acquia_slate') . '/images/' . $value['image'], '', '', array('width' => '170'), FALSE);
+            if ($value['href']) {
+                $output .= l($image, url($value['href'], array('absolute' => TRUE)), array('html' => TRUE, 'attributes' => array('target' => '_blank')));
+            } else {
+                $output .= $image;
+            }
+            $output .= '</div>';
+        }
+        $output .= '</div>';
+        return $output;
+    }
+}
