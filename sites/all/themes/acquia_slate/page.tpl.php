@@ -30,6 +30,18 @@
         <a href="#main-content-area"><?php print t('Skip to Main Content Area'); ?></a>
       </div>
 
+      <div id="preheader-top">
+        <?php print(l(theme_image(drupal_get_path('theme', 'acquia_slate').'/images/vkontakte-icon.png').'мы в контакте', 'http://vk.com/informatorplus', array('attributes' => array('target' => '_blank'), 'html' => true)));?>
+        <?php print $search_box; ?>
+        <?php //print theme('grid_block', $search_box, 'search-box'); ?>
+        <?php print $preheader_top;?>
+      </div>
+      <div id="slideshow-main-menu">
+          <div class="slideshow-main">
+              <?php print theme_image(drupal_get_path('theme', 'acquia_slate').'/images/slider.png');?>
+          </div>
+          <?php print theme('grid_row', $primary_links_tree, 'main-menu-tree'); ?>
+      </div>
       <!-- header-top row: width = grid_width -->
       <?php print theme('grid_row', $header_top, 'header-top', 'full-width', $grid_width); setlocale(LC_ALL, 'rus');?>
 
@@ -37,26 +49,8 @@
       <div id="header-group-wrapper" class="header-group-wrapper <?php if ($preface_top) { echo "with-preface-top"; } else { echo "without-preface-top"; }?> full-width">
         <div id="header-group" class="header-group row <?php print $grid_width; ?>">
           <div id="header-group-inner" class="header-group-inner inner clearfix">
-            <?php print theme('grid_block', $primary_links_tree, 'primary-menu'); ?>
-            <?php if ($logo || $site_name || $site_slogan || $header): ?>
-            <div id="header-site-info" class="header-site-info <?php if ($preface_top) { echo "with-preface-top"; } else { echo "without-preface-top"; }?> block">
-              <div id="header-site-info-inner" class="header-site-info-inner inner clearfix">
-                <?php print theme('grid_block', $search_box, 'search-box'); ?>
-                <?php if ($logo): ?>
-                <div id="logo">
-                  <a href="<?php print check_url($front_page); ?>" title="<?php print t('Home'); ?>"><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /></a>
-                </div>
-                <?php endif; ?>
-                <?php if ($site_name || $site_slogan): ?>
-                <div id="site-name-wrapper" class="clearfix">
-                  <?php if ($site_name): ?>
-                  <span id="site-name"<?php if ($site_slogan): ?> class="with-slogan"<?php endif; ?>><a href="<?php print check_url($front_page); ?>" title="<?php print t('Home'); ?>"><?php print $site_name; ?></a></span>
-                  <?php endif; ?>
-                  <?php if ($site_slogan): ?>
-                  <span id="slogan"><?php print $site_slogan; ?></span>
-                  <?php endif; ?>
-                </div><!-- /site-name-wrapper -->
-                <?php endif; ?>
+            
+
                 <?php if ($header): ?>
                 <div id="header-wrapper" class="header-wrapper">
                   <?php print $header; ?>
@@ -64,7 +58,7 @@
                 <?php endif; ?>
               </div><!-- /header-site-info-inner -->
             </div><!-- /header-site-info -->
-            <?php endif; ?>
+
           </div><!-- /header-group-inner -->
 
           <!-- preface-top row: width = grid_block -->

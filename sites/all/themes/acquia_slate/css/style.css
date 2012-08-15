@@ -346,7 +346,7 @@ input {
     border-radius: 3px;
 }
 #search-box {
-    top: 0px;
+    float: left;
 }
 #search-button {
     /*position: absolute;*/
@@ -971,18 +971,45 @@ input {
 #header-site-info {
     overflow: visible !important;
 }
+#preheader-top .block .content {
+    margin: 0;
+}
+#preheader-top .block .inner {
+    margin: 0;
+}
+#block-menu-menu-usermenu li a:hover {
+    text-decoration: none;
+    color: #000;
+}
 #block-menu-menu-usermenu li a{
-    color: #888;
+    margin: 0;
+    font-weight: normal;
+    font-size: 10px;
+    color: #111;
+}
+#block-menu-menu-usermenu ul{
+/*    width: 155px;*/
+    border-radius: 5px;
+    background: white;
+    padding: 2px 12px;
+    margin: 0;
+    overflow: hidden;
+    float: left;
 }
 #block-menu-menu-usermenu li{
+    text-align: center;
+    list-style-type: none;
+    list-style-image: none;
     float: left;
     margin-right: 20px;
     font-weight: bold;
 }
+#block-menu-menu-usermenu li.last{
+    margin-right: 0;
+}
 #block-menu-menu-usermenu {
-    position: absolute;
-    top: -27px;
-    left: -15px;
+    width: auto;
+    float: right;
 }
 /*end menus*/
 .right_banner_wrapper {
@@ -990,7 +1017,7 @@ input {
 }
 .right_banner_item img{
     border-radius: 3px;
-    
+
 }
 .right_banner_item img:hover{
     box-shadow: 0 0 10px #eeeeee; /* Параметры тени */
@@ -998,3 +1025,86 @@ input {
     -moz-box-shadow: 0 0 10px #eeeeee; /* Для Firefox */
     -webkit-box-shadow: 0 0 10px #eeeeee; /* Для Safari и Chrome */
 }
+
+/*slideshow main menu*/
+#main-menu-tree {
+    overflow: visible;
+}
+#slideshow-main-menu ul {
+
+}
+#slideshow-main-menu ul li.active-trail a, #slideshow-main-menu ul li a:hover{
+    text-decoration: none;
+    background: url('../images/main-menu-active.png');
+}
+#slideshow-main-menu ul li.active-trail a{
+    text-indent: 38px;
+}
+#slideshow-main-menu ul li a{
+    text-shadow: black 1px 1px 2px, black 0 0 1em;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff !important;
+    width: 253px;
+    position: absolute;
+    right: 0;
+    text-indent: 68px;
+    height: 70px;
+    line-height: 70px;
+    padding: 0;
+    margin: 0;
+}
+#slideshow-main-menu ul li {
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Для Firefox */
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Для Safari и Chrome */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
+    text-align: center;
+    border-bottom-right-radius: 12px;
+    border-top-right-radius: 12px;
+    margin-bottom: 1px;
+    width: 189px;
+    height: 70px;
+    background: #000;
+    position: relative;
+    float: none;
+}
+#slideshow-main-menu {
+    position: relative;
+    width: 940px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.slideshow-main {
+    float: left;
+}
+.slideshow-main img {
+    width: 750px !important;
+    height: 354px !important;
+}
+#preheader-top a {
+    margin-right: 10px;
+    float: left;
+    color: #fff;
+}
+#preheader-top a:hover {
+    text-decoration: none;
+    color: #eee;
+}
+#preheader-top a img {
+    margin-bottom: -3px;
+    margin-right: 3px;
+}
+#preheader-top {
+    background: #2b2a29;
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Для Firefox */
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Для Safari и Chrome */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    width: 920px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+/*end slideshow main menu*/

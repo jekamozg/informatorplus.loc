@@ -14,6 +14,7 @@ scripts[] = js/custom.js
 
 regions[sidebar_first] = sidebar first
 regions[sidebar_last] = sidebar last
+regions[preheader_top] = preheader top
 regions[header_top] = header top
 regions[header] = header
 regions[preface_top] = preface top
