@@ -345,6 +345,11 @@ table.info_attendance td:last-child{
 input {
     border-radius: 3px;
 }
+
+#search {
+    position: relative;
+}
+
 #search-box {
     float: left;
 }
