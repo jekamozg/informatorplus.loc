@@ -1,0 +1,185 @@
+<?php
+
+function drupal_parse_url($url) {
+    $options = array(
+        'path' => NULL,
+        'query' => array(),
+        'fragment' => '',
+    );
+
+    // External URLs: not using parse_url() here, so we do not have to rebuild
+    // the scheme, host, and path without having any use for it.
+    if (strpos($url, '://') !== FALSE) {
+        // Split off everything before the query string into 'path'.
+        $parts = explode('?', $url);
+        $options['path'] = $parts[0];
+        // If there is a query string, transform it into keyed query parameters.
+        if (isset($parts[1])) {
+            $query_parts = explode('#', $parts[1]);
+            parse_str($query_parts[0], $options['query']);
+            // Take over the fragment, if there is any.
+            if (isset($query_parts[1])) {
+                $options['fragment'] = $query_parts[1];
+            }
+        }
+    }
+    // Internal URLs.
+    else {
+        // parse_url() does not support relative URLs, so make it absolute. E.g. the
+        // relative URL "foo/bar:1" isn't properly parsed.
+        $parts = parse_url('http://example.com/' . $url);
+        // Strip the leading slash that was just added.
+        $options['path'] = substr($parts['path'], 1);
+        if (isset($parts['query'])) {
+            parse_str($parts['query'], $options['query']);
+        }
+        if (isset($parts['fragment'])) {
+            $options['fragment'] = $parts['fragment'];
+        }
+    }
+    // The 'q' parameter contains the path of the current page if clean URLs are
+    // disabled. It overrides the 'path' of the URL when present, even if clean
+    // URLs are enabled, due to how Apache rewriting rules work.
+    if (isset($options['query']['q'])) {
+        $options['path'] = $options['query']['q'];
+        unset($options['query']['q']);
+    }
+
+    return $options;
+}
+
+/*
+ * Implementation of hook_init()
+ */
+
+function info_autoclubs_init() {
+    drupal_add_css(drupal_get_path('module', 'info_autoclubs') . '/css/info_autoclubs.css');
+}
+
+/*
+ * Implementation of hook_menu_alter()
+ */
+
+function info_autoclubs_menu_alter(&$items) {
+    // Example - disable the page at node/add
+//        $node = node_load();
+//        $items['node/add/photoalbum-autoclub']['access callback'] = og_is_group_admin($node);
+}
+
+/*
+ * Implementation of hook_form_alter()
+ */
+
+function info_autoclubs_form_alter(&$form, &$form_state, $form_id) {
+    switch ($form_id) {
+        case 'photoalbum_autoclub_node_form':
+        case 'video_autoclub_node_form':
+            $form['#node']->og_public = true;
+            if (isset($_REQUEST['autoclub'])) {
+                $form['og_nodeapi']['visible']['og_groups']['#default_value'] = array($_REQUEST['autoclub']);
+            }
+            break;
+
+        default:
+            break;
+    }
+}
+
+function getYmap($nid) {
+    $ov = ymaps_get_map_overlays($nid, variable_get('ymaps_block_showchilds' . $nid, 1), variable_get('ymaps_block_trackshow' . $nid, 1));
+    $output = ' <div id="ymaps-map-' . $nid . '" style="height:400px; width:100%" ></div>';
+    ymaps_doheader();
+    drupal_add_js("$(document).ready(function(){ YMaps.load(ymapsinit($nid));
+       " . _ymaps_map_settings($nid, _ymaps_block_settings(0)) . " " . ymaps_tracks_show($nid, $ov['tracks']) . " " . ymaps_markers_show($nid, $ov['placemarks']) . " 
+          });
+          ", 'inline', 'header', FALSE, FALSE, FALSE);
+
+    return $output;
+}
+
+/*
+ * Implementation of hook_nodeapi()
+ */
+
+function info_autoclubs_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+    global $user;
+    switch ($op) {
+        case 'view':
+            if ($node->type == 'autoclub') {
+                unset($node->content['field_logo_autoclub']);
+                if (($node->content['locations']['#value'])) {
+                    $node->content['Ymap'] = array(
+                        '#value' => getYmap($node->nid),
+                        '#weight' => 10,
+                    );
+                }
+                $is_group_admin = og_is_group_admin($node);
+
+                $adminLinkOptions = array(
+                    'query' => array(
+                        'destination' => 'node/' . $node->nid,
+                        'autoclub' => $node->nid,
+                    ),
+                    'attributes' => array(
+                        'class' => 'btn-primary',
+                    )
+                );
+                $node->adminLinks = array(
+                    'add_photoalbum' => ($is_group_admin) ? l(t('Add'), 'node/add/photoalbum-autoclub', $adminLinkOptions) : '',
+                    'add_video' => ($is_group_admin) ? l(t('Add'), 'node/add/video-autoclub', $adminLinkOptions) : '',
+                );
+
+                $node->addFields = array(
+                    'is_group_admin' => $is_group_admin,
+                    'field_logo_autoclub' => theme('imagecache', 'autoclub_node_logo', $node->field_logo_autoclub[0]['filepath']),
+                    'view_autoclub_users' => views_embed_view('autoclub_users', 'block_1', $node->nid),
+                    'view_autoclub_photoalbums' => views_embed_view('autoclub_photoalbums', 'block_1', $node->nid),
+                    'view_autoclub_videos' => views_embed_view('autoclub_videos', 'block_1', $node->nid),
+                );
+                $group_button = '';
+                $groupLinkOptions = array(
+                    'query' => drupal_get_destination(),
+                    'attributes' => array(
+                        'class' => 'btn-primary',
+                    )
+                );
+                if ($is_group_admin) {
+                    $group_button = l(t('Edit'), 'node/' . $node->nid . '/edit', $groupLinkOptions);
+                } elseif (og_is_group_member($node->nid)) {
+                    $group_button = l(t('Leave'), 'og/unsubscribe/' . $node->nid . '/' . $user->uid, $groupLinkOptions);
+                } else {
+                    $group_button = l(t('Join'), 'og/subscribe/' . $node->nid, $groupLinkOptions);
+                }
+                $node->addFields['group_button'] = $group_button;
+            }
+            break;
+        case 'prepare':
+//                    ymaps_get_node_markers($node);
+//                    ymaps_get_node_markers($node);
+            if ($node->type == 'photoalbum_autoclub' || $node->type == 'video_autoclub') {
+                if (isset($_REQUEST['autoclub'])) {
+                    $autoclub = node_load($_REQUEST['autoclub']);
+                    if (!og_is_group_admin($autoclub)) {
+                        drupal_access_denied();
+                        die;
+                    }
+                } else if (isset($node->og_groups)) {
+                    $is_admin = false;
+                    foreach ($node->og_groups as $key => $value) {
+                        $autoclub = node_load($value);
+                        $is_admin |= og_is_group_admin($autoclub);
+                    }
+                    if (!$is_admin) {
+                        drupal_access_denied();
+                        die;
+                    }
+                } else {
+                    drupal_access_denied();
+                    die;
+                }
+            }
+            break;
+    }
+}
+
+?>

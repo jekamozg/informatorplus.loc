@@ -1,0 +1,159 @@
+/*small changes with messages*/
+.views-messages .messages.error {
+    display: none;
+}
+/*end small changes with messages*/
+
+.node-center-inner {
+    width: 590px;
+    padding-right: 15px;
+    float: left;
+}
+
+.node-right-inner {
+    float: right;
+}
+
+/*youtube lightbox*/
+.node-type-autoclub #lightbox #bottomNav {
+    display: none !important;
+}
+/*end youtube lightbox*/
+
+/*photoalbums view*/
+.view-id-autoclub_photoalbums.view-display-id-block_1{
+    position: relative;
+}
+.view-id-autoclub_photoalbums.view-display-id-block_1 .pager{
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.view-id-autoclub_photoalbums.view-display-id-block_1 .views-row{
+    position: relative;
+}
+
+.view-id-autoclub_photoalbums.view-display-id-block_1 .views-field-title{
+    position: absolute;
+    top: 5px;
+    left: 110px;
+}
+.view-id-autoclub_photoalbums.view-display-id-block_1 .views-field-changed{
+    position: absolute;
+    top: 25px;
+    left: 110px;
+}
+/*end photoalbums view*/
+
+/*videos view*/
+.view-id-autoclub_videos.view-display-id-block_1{
+    position: relative;
+}
+.view-id-autoclub_videos.view-display-id-block_1 .pager{
+    margin: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.view-id-autoclub_videos.view-display-id-block_1 .views-row{
+    position: relative;
+}
+.view-id-autoclub_videos.view-display-id-block_1 .views-field-title{
+    position: absolute;
+    top: 25px;
+    left: 130px;
+}
+/*end videos view*/
+
+/*users view*/
+.view-id-autoclub_users.view-display-id-block_1{
+    position: relative;
+}
+.view-id-autoclub_users.view-display-id-block_1 .pager{
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+/*end users view*/
+
+/*autoclubs view*/
+.view-id-autoclubs.view-display-id-page_1 .views-row{
+    overflow: hidden;
+    position: relative;
+    background: #3E3E3E;
+    border: 1px solid #555;
+    margin: 5px;
+    padding: 5px;
+    float: left;
+    width: 280px;
+    border-radius: 5px;
+}
+
+.view-id-autoclubs.view-display-id-page_1 .views-row:hover{
+    background: #2B2A29;
+}
+
+.view-id-autoclubs.view-display-id-page_1 .views-field-subscribe{
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+}
+.view-id-autoclubs.view-display-id-page_1 .views-field-member-count{
+    position: absolute;
+    top: 30px;
+    left: 120px;
+}
+.view-id-autoclubs.view-display-id-page_1 .views-field-title{
+    top: 5px;
+    left: 120px;
+    position: absolute;
+}
+/*end autoclubs view*/
+
+/*node autoclub*/
+.node.node-type-autoclub .location-locations-wrapper {
+    float: none;
+}
+
+.node-type-autoclub #content-tabs {
+    display: none;
+}
+/*end node autoclub*/
+
+/*node autoclub_photoalbum*/
+.field-field-photo-autoclub .field-item:hover {
+background-color: #111;
+background-repeat: repeat-x;
+background-image: -khtml-gradient(linear,left top,left bottom,from(#333),to(black));
+background-image: -moz-linear-gradient(top,#333,black);
+background-image: -ms-linear-gradient(top,#333,black);
+background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#333),color-stop(100%,black));
+background-image: -webkit-linear-gradient(top,#333,black);
+background-image: -o-linear-gradient(top,#333,black);
+background-image: linear-gradient(top,#333,black);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#000000',GradientType=0);
+behavior: url(/PIE.htc);
+}
+
+.field-field-photo-autoclub .field-item {
+border-radius: 5px;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+padding: 6px;
+margin: 6px;
+float: left;
+background-color: #454545;
+background-repeat: repeat-x;
+background-image: -khtml-gradient(linear, left top, left bottom, from(black), to(#333));
+background-image: -moz-linear-gradient(top, black, #333);
+background-image: -ms-linear-gradient(top, black, #333);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, #333));
+background-image: -webkit-linear-gradient(top, black, #333);
+background-image: -o-linear-gradient(top, black, #333);
+background-image: linear-gradient(top, black, #454545);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#333333', GradientType=0);
+behavior: url(/PIE.htc);
+}
+/*end node autoclub_photoalbum*/

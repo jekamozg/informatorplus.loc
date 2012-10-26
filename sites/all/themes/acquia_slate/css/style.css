@@ -114,7 +114,9 @@ fieldset.group-a-addition{
 .YMaps-copyrights {
     display: none;
 }
-
+.content-inner.block {
+    margin-bottom: 5px;
+}
 .block {
     margin-bottom: 0px;
 }
@@ -159,6 +161,7 @@ table.info_attendance td:last-child{
     margin-left: 4px;
 }
 #content-inner-inner{
+    margin-bottom: 5px;
     z-index:0;
     border: 1px solid #444;
     box-shadow: 0 0 5px black;
@@ -993,7 +996,7 @@ input {
     color: #111;
 }
 #block-menu-menu-usermenu ul{
-/*    width: 155px;*/
+    /*    width: 155px;*/
     border-radius: 5px;
     background: white;
     padding: 2px 12px;
@@ -1113,3 +1116,39 @@ input {
     overflow: hidden;
 }
 /*end slideshow main menu*/
+
+/*views global*/
+.ahah-progress .throbber,
+html.js input.form-autocomplete,
+html.js a.views-throbbing,
+html.js span.views-throbbing {
+    background:url(../images/ajax-loader.gif) no-repeat right center;
+    padding-right:18px;
+}
+
+.view .pager li, .view .pager li a {
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+/*end views global*/
+
+/*global links*/
+.btn-primary{
+    color: #eee !important;
+    display: block;
+    padding: 1px 15px;
+    background: url(../images/button.png) top left;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    behavior: url(/PIE.htc);
+}
+.btn-primary:active{
+    color: #E23820 !important;
+}
+.btn-primary:hover{
+    text-decoration: none;
+    background: url(../images/button.png) bottom left;
+}
+/*end global links*/
