@@ -27,7 +27,7 @@
 .view-id-autoclub_photoalbums.view-display-id-block_1 .pager{
     margin: 0;
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     right: 0;
 }
 .view-id-autoclub_photoalbums.view-display-id-block_1 .views-row{
@@ -120,6 +120,9 @@
 .node-type-autoclub #content-tabs {
     display: none;
 }
+.node-type-photoalbum-autoclub .groups {
+    clear: both;
+}
 /*end node autoclub*/
 
 /*node autoclub_photoalbum*/
@@ -155,5 +158,12 @@ background-image: -o-linear-gradient(top, black, #333);
 background-image: linear-gradient(top, black, #454545);
 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#333333', GradientType=0);
 behavior: url(/PIE.htc);
+}
+.groups .links {
+    display: block;
+}
+
+#comment-form .collapsible {
+    display: none;
 }
 /*end node autoclub_photoalbum*/

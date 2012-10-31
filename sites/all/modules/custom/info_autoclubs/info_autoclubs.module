@@ -54,6 +54,7 @@ function drupal_parse_url($url) {
 
 function info_autoclubs_init() {
     drupal_add_css(drupal_get_path('module', 'info_autoclubs') . '/css/info_autoclubs.css');
+    drupal_add_js(drupal_get_path('module', 'info_autoclubs') . '/js/custom.js');
 }
 
 /*
@@ -86,7 +87,7 @@ function info_autoclubs_form_alter(&$form, &$form_state, $form_id) {
 }
 
 function getYmap($nid) {
-    $ov = ymaps_get_map_overlays($nid, variable_get('ymaps_block_showchilds' . $nid, 1), variable_get('ymaps_block_trackshow' . $nid, 1));
+    $ov = ymaps_get_map_overlays($nid, variable_get('ymaps_block_showchilds' . $nid, 1), false);
     $output = ' <div id="ymaps-map-' . $nid . '" style="height:400px; width:100%" ></div>';
     ymaps_doheader();
     drupal_add_js("$(document).ready(function(){ YMaps.load(ymapsinit($nid));
@@ -113,8 +114,8 @@ function info_autoclubs_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
                         '#weight' => 10,
                     );
                 }
+                
                 $is_group_admin = og_is_group_admin($node);
-
                 $adminLinkOptions = array(
                     'query' => array(
                         'destination' => 'node/' . $node->nid,
@@ -128,7 +129,6 @@ function info_autoclubs_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
                     'add_photoalbum' => ($is_group_admin) ? l(t('Add'), 'node/add/photoalbum-autoclub', $adminLinkOptions) : '',
                     'add_video' => ($is_group_admin) ? l(t('Add'), 'node/add/video-autoclub', $adminLinkOptions) : '',
                 );
-
                 $node->addFields = array(
                     'is_group_admin' => $is_group_admin,
                     'field_logo_autoclub' => theme('imagecache', 'autoclub_node_logo', $node->field_logo_autoclub[0]['filepath']),
@@ -143,6 +143,7 @@ function info_autoclubs_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
                         'class' => 'btn-primary',
                     )
                 );
+                
                 if ($is_group_admin) {
                     $group_button = l(t('Edit'), 'node/' . $node->nid . '/edit', $groupLinkOptions);
                 } elseif (og_is_group_member($node->nid)) {
@@ -150,12 +151,11 @@ function info_autoclubs_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
                 } else {
                     $group_button = l(t('Join'), 'og/subscribe/' . $node->nid, $groupLinkOptions);
                 }
+                
                 $node->addFields['group_button'] = $group_button;
             }
             break;
         case 'prepare':
-//                    ymaps_get_node_markers($node);
-//                    ymaps_get_node_markers($node);
             if ($node->type == 'photoalbum_autoclub' || $node->type == 'video_autoclub') {
                 if (isset($_REQUEST['autoclub'])) {
                     $autoclub = node_load($_REQUEST['autoclub']);
