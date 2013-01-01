@@ -40,9 +40,9 @@
     left: 110px;
 }
 .view-id-autoclub_photoalbums.view-display-id-block_1 .views-field-changed{
-    position: absolute;
-    top: 25px;
-    left: 110px;
+    /*    position: absolute;
+        top: 25px;
+        left: 110px;*/
 }
 /*end photoalbums view*/
 
@@ -110,6 +110,10 @@
     left: 120px;
     position: absolute;
 }
+#view-id-autoclubs-page_1 .pager {
+    padding: 10px;
+    text-align: left;
+}
 /*end autoclubs view*/
 
 /*node autoclub*/
@@ -127,37 +131,37 @@
 
 /*node autoclub_photoalbum*/
 .field-field-photo-autoclub .field-item:hover {
-background-color: #111;
-background-repeat: repeat-x;
-background-image: -khtml-gradient(linear,left top,left bottom,from(#333),to(black));
-background-image: -moz-linear-gradient(top,#333,black);
-background-image: -ms-linear-gradient(top,#333,black);
-background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#333),color-stop(100%,black));
-background-image: -webkit-linear-gradient(top,#333,black);
-background-image: -o-linear-gradient(top,#333,black);
-background-image: linear-gradient(top,#333,black);
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#000000',GradientType=0);
-behavior: url(/PIE.htc);
+    background-color: #111;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear,left top,left bottom,from(#333),to(black));
+    background-image: -moz-linear-gradient(top,#333,black);
+    background-image: -ms-linear-gradient(top,#333,black);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#333),color-stop(100%,black));
+    background-image: -webkit-linear-gradient(top,#333,black);
+    background-image: -o-linear-gradient(top,#333,black);
+    background-image: linear-gradient(top,#333,black);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#000000',GradientType=0);
+    behavior: url(/PIE.htc);
 }
 
 .field-field-photo-autoclub .field-item {
-border-radius: 5px;
--webkit-border-radius: 5px;
--moz-border-radius: 5px;
-padding: 6px;
-margin: 6px;
-float: left;
-background-color: #454545;
-background-repeat: repeat-x;
-background-image: -khtml-gradient(linear, left top, left bottom, from(black), to(#333));
-background-image: -moz-linear-gradient(top, black, #333);
-background-image: -ms-linear-gradient(top, black, #333);
-background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, #333));
-background-image: -webkit-linear-gradient(top, black, #333);
-background-image: -o-linear-gradient(top, black, #333);
-background-image: linear-gradient(top, black, #454545);
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#333333', GradientType=0);
-behavior: url(/PIE.htc);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 6px;
+    margin: 6px;
+    float: left;
+    background-color: #454545;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(black), to(#333));
+    background-image: -moz-linear-gradient(top, black, #333);
+    background-image: -ms-linear-gradient(top, black, #333);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, #333));
+    background-image: -webkit-linear-gradient(top, black, #333);
+    background-image: -o-linear-gradient(top, black, #333);
+    background-image: linear-gradient(top, black, #454545);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#333333', GradientType=0);
+    behavior: url(/PIE.htc);
 }
 .groups .links {
     display: block;
@@ -167,3 +171,10 @@ behavior: url(/PIE.htc);
     display: none;
 }
 /*end node autoclub_photoalbum*/
+
+
+/*small fixes for og autoclub edit*/
+#edit-field-logo-autoclub-0-ahah-wrapper + .form-item, #edit-og-register-wrapper, #edit-og-directory-wrapper, #edit-og-private-wrapper {
+    display: none;
+}
+/*end small fixes for og autoclub edit*/

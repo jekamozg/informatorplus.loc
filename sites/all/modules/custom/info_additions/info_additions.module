@@ -54,8 +54,8 @@ function info_additions_right_banner() {
                     'href' => '',
                 ),
                 array(
-                    'image' => 'akula.jpg',
-                    'href' => 'http://www.black-sharks-omsk.ru/',
+                    'image' => 'advokat.png',
+                    'href' => 'http://www.absolytpravo.okis.ru',
                 ),
                 array(
                     'image' => 'forum_2011_banner.gif',

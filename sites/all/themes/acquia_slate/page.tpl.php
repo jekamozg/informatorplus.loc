@@ -38,7 +38,7 @@
       </div>
       <div id="slideshow-main-menu">
           <div class="slideshow-main">
-              <?php print theme_image(drupal_get_path('theme', 'acquia_slate').'/images/slider.png');?>
+              <?php print theme_image(drupal_get_path('theme', 'acquia_slate').'/images/new-year.jpg');?>
           </div>
           <?php print theme('grid_row', $primary_links_tree, 'main-menu-tree'); ?>
       </div>
