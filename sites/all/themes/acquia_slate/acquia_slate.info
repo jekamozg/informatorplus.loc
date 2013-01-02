@@ -11,6 +11,7 @@ stylesheets[all][] = css/fusion-acquia-slate-style.css
 scripts[] = js/jquery.corner.js
 scripts[] = js/fusion-acquia-slate-script.js
 scripts[] = js/custom.js
+scripts[] = js/jquery.cycle.all.js
 
 regions[sidebar_first] = sidebar first
 regions[sidebar_last] = sidebar last

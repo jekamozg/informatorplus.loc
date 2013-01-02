@@ -1042,6 +1042,7 @@ input {
 
 }
 #slideshow-main-menu ul li.active-trail a, #slideshow-main-menu ul li a:hover{
+    z-index: 10;
     text-decoration: none;
     background: url('../images/main-menu-active.png');
 }
@@ -1152,3 +1153,16 @@ html.js span.views-throbbing {
     background: url(../images/button.png) bottom left;
 }
 /*end global links*/
+
+/*banner block fix*/
+#block-info_attendance-0 {
+    width: 250px;
+}
+#footer-inner {
+    position: relative;
+}
+#block-views-banners-block_3 {
+    width: auto;  position: absolute;  left: 250px;  top: 20px;
+    
+}
+/*end banner block fix*/

@@ -34,9 +34,14 @@ function menu_add_plus(){
     $('.block-menu .content > .menu > li.expanded').before('<div class="menu_arrow"></div>');
 }
 
+function slideshow_activate() {
+    $('#slideshow-main-menu .slideshow-main .view-content').cycle();
+}
+
 $(document).ready(function(){
     autoservice_menu();
     autoservice_notitle_event();
     global_fixes();
+    slideshow_activate();
 //    menu_add_plus();
 });
