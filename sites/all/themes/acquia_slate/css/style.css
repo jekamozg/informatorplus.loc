@@ -158,7 +158,7 @@ table.info_attendance td:last-child{
     /*    background-image: url('../images/banner/top-banner.jpg');*/
 }
 #content-group {
-    margin-left: 4px;
+    /*margin-left: 4px;*/
 }
 #content-inner-inner{
     margin-bottom: 5px;
@@ -173,7 +173,9 @@ table.info_attendance td:last-child{
     /*    background: url('../images/footer_bg.png') repeat-y 50% 0 #333333;*/
     behavior: url(/PIE.htc);
 }
-.page-node #content-inner-inner > .title{
+.page-node #content-inner-inner > .title,
+.page-photoalbums #content-inner-inner > .title,
+.page-videos #content-inner-inner > .title {
     box-shadow: 0 0 5px black; /* Параметры тени */
     box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
     -moz-box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Для Firefox */
@@ -1163,6 +1165,167 @@ html.js span.views-throbbing {
 }
 #block-views-banners-block_3 {
     width: auto;  position: absolute;  left: 250px;  top: 20px;
-    
+
 }
 /*end banner block fix*/
+
+/*node photoalbum*/
+.field-field-photoalbum-photo {
+    overflow: hidden;
+}
+.field-field-photoalbum-photo .field-item:hover {
+    background-color: #111;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear,left top,left bottom,from(#333),to(black));
+    background-image: -moz-linear-gradient(top,#333,black);
+    background-image: -ms-linear-gradient(top,#333,black);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#333),color-stop(100%,black));
+    background-image: -webkit-linear-gradient(top,#333,black);
+    background-image: -o-linear-gradient(top,#333,black);
+    background-image: linear-gradient(top,#333,black);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#000000',GradientType=0);
+    behavior: url(/PIE.htc);
+}
+
+.field-field-photoalbum-photo .field-item {
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 6px;
+    margin: 6px;
+    float: left;
+    background-color: #454545;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(black), to(#333));
+    background-image: -moz-linear-gradient(top, black, #333);
+    background-image: -ms-linear-gradient(top, black, #333);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, #333));
+    background-image: -webkit-linear-gradient(top, black, #333);
+    background-image: -o-linear-gradient(top, black, #333);
+    background-image: linear-gradient(top, black, #454545);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#333333', GradientType=0);
+    behavior: url(/PIE.htc);
+}
+
+/*view photoalbums*/
+#view-id-videos-page_1 .views-row,
+#view-id-photoalbums-page_1 .views-row {
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background: #000;
+    position: relative;
+    margin: 17px;
+    float: left;
+    overflow: hidden;
+}
+
+#view-id-videos-page_1 .views-row .views-field-title,
+#view-id-photoalbums-page_1 .views-row .views-field-title {
+    background: #000;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    position: absolute;
+    top: 5px;
+}
+
+#view-id-videos-page_1 .views-row .views-field-created,
+#view-id-photoalbums-page_1 .views-row .views-field-created {
+    font-size: 10px;
+    text-decoration: underline;
+    padding: 0px 10px 5px 10px;
+    background-color: #454545;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(black), to(#333));
+    background-image: -moz-linear-gradient(top, black, #333);
+    background-image: -ms-linear-gradient(top, black, #333);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, #333));
+    background-image: -webkit-linear-gradient(top, black, #333);
+    background-image: -o-linear-gradient(top, black, #333);
+    background-image: linear-gradient(top, black, #454545);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#333333', GradientType=0);
+}
+#view-id-videos-page_1 .views-row .views-field-field-video-link-value,
+#view-id-photoalbums-page_1 .views-row .views-field-field-photoalbum-photo-fid {
+    opacity: 0.8;
+}
+#view-id-videos-page_1 .views-row .views-field-field-video-link-value img,
+#view-id-photoalbums-page_1 .views-row .views-field-field-photoalbum-photo-fid img {
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+#view-id-videos-page_1 .views-row .views-field-field-video-link-value:hover,
+#view-id-photoalbums-page_1 .views-row .views-field-field-photoalbum-photo-fid:hover {
+    opacity: 1;
+}
+#view-id-videos-page_1 .views-row .views-field-title a,
+#view-id-photoalbums-page_1 .views-row .views-field-title a {
+    padding: 0 10px;
+    display: block;
+    color: #fff;
+}
+
+#view-id-videos-page_1 .views-row .views-field-title a:hover,
+#view-id-photoalbums-page_1 .views-row .views-field-title a:hover {
+    text-decoration: none;
+}
+
+/*end view photoalbums*/
+
+/*view videos*/
+.page-videos #lightbox #bottomNav {
+    display: none !important;
+}
+
+#view-id-videos-page_1 .views-row .views-field-field-video-link-value img {
+    width: 418px;
+}
+
+#view-id-videos-page_1 .views-row .views-field-title {
+    overflow: hidden;
+    border-radius: 5px;
+    text-align: center;
+    top: 144px;
+    left: 60px;
+    width: 300px;
+}
+/*end view videos*/
+
+/*lightbox fix*/
+#outerImageContainer {
+    border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+}
+#imageDataContainer {
+    font-family: inherit;
+}
+#imageDetails {
+    padding: 0 0 10px 10px;
+}
+#loadingLink {
+    background: url('../images/lightbox-loading.gif') no-repeat;
+}
+/*end lightbox fix*/
+
+#preheader-top .gi-icons{
+    margin-right: 3px;
+    margin-top: 3px;
+    float: left;
+}
+
+/*glyphicons-halflings-white.png icons*/
+.gi-icons {
+    display: block;
+    width: 14px;
+    height: 14px;
+    background: url('../images/glyphicons-halflings-white.png') no-repeat;
+}
+.gi-icon-camera {
+    background-position: -120px -48px;
+}
+.gi-icon-facetime-video {
+    background-position: -432px -48px;
+}
+/*end glyphicons-halflings-white.png icons*/

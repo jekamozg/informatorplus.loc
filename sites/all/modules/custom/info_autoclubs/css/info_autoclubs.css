@@ -130,6 +130,9 @@
 /*end node autoclub*/
 
 /*node autoclub_photoalbum*/
+.field-field-photo-autoclub {
+    overflow: hidden;
+}
 .field-field-photo-autoclub .field-item:hover {
     background-color: #111;
     background-repeat: repeat-x;

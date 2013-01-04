@@ -31,6 +31,8 @@
       </div>
 
       <div id="preheader-top">
+        <?php print(l('<span class="gi-icons gi-icon-camera"></span>'.'фото', 'photoalbums', array('html' => true)));?>
+        <?php print(l('<span class="gi-icons gi-icon-facetime-video"></span>'.'видео', 'videos', array('html' => true)));?>
         <?php print(l(theme_image(drupal_get_path('theme', 'acquia_slate').'/images/vkontakte-icon.png').'мы в контакте', 'http://vk.com/informatorplus', array('attributes' => array('target' => '_blank'), 'html' => true)));?>
         <?php print $search_box; ?>
         <?php //print theme('grid_block', $search_box, 'search-box'); ?>
