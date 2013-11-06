@@ -1075,6 +1075,7 @@ input {
     margin-bottom: 1px;
     width: 189px;
     height: 70px;
+    margin-left: 0;
     background: #000;
     position: relative;
     float: none;
